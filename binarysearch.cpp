@@ -33,6 +33,17 @@ int main()
         cin >> v[i];
     }
     sort(v.begin(), v.end());
+    int val = 50;
+
+    // Finding lower and upper boud of val in v
+    auto lb = lower_bound(v.begin(), v.end(), val); // chek the first value greater or equal of the given val;
+    auto up = upper_bound(v.begin(), v.end(), val); // check the firat value that is greater of the given val;
+
+    // check is the value exist or not in the array using binary search stl funtion;
+    if (binary_search(v.begin(), v.end(), val))
+        cout << val << " exists in vector";
+    else
+        cout << val << " does not exist";
 
     ll bs = BinarySearch(v, 0, n - 1, k);
     cout << bs << endl;
