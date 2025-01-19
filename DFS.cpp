@@ -1,7 +1,10 @@
 #include <bits/stdc++.h>
 using namespace std;
+const int N = 1e5 + 10;
+vector<int> g[N + 1];
+int vis[N + 1];
 typedef long long ll;
-void dfs(int node, vector<int> g[], int vis[])
+void dfs(int node)
 {
     vis[node] = 1;
     cout << node << " ";
@@ -9,7 +12,7 @@ void dfs(int node, vector<int> g[], int vis[])
     {
         if (!vis[i])
         {
-            dfs(i, g, vis);
+            dfs(i);
         }
     }
 }
@@ -18,8 +21,7 @@ int main()
 
     int n, m;
     cin >> n >> m;
-    vector<int> g[n + 1];
-    int vis[n + 1] = {0};
+
     for (int i = 0; i < m; i++)
     {
         int u, v;
@@ -27,5 +29,5 @@ int main()
         g[u].push_back(v);
         g[v].push_back(u);
     }
-    dfs(1, g, vis);
+    dfs(1);
 }
