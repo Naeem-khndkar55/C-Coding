@@ -1,51 +1,44 @@
+#include <cmath>
+#include <vector>
 #include <iostream>
+#include <climits>
 using namespace std;
-
-int nums[100];
-int n;
-int dp[100][100];
-
-int f(int i, int j)
+typedef long long ll;
+const int N = 22 + 10;
+ll n;
+ll arr[N];
+ll func(ll start, ll stop)
 {
-    if (i == j)
-        return 0;
-    if (dp[i][j] != -1)
-        return dp[i][j];
-    int maxi = -1e9;
-    for (int k = i; k < j; k++)
+    if (start > stop)
     {
-        int score;
-        if (i == 1 && j == n + 1)
+        return 0;
+    }
+    ll ans = INT_MIN;
+    for (int i = start; i <= stop; i++)
+    {
+        ll tmp = 0;
+        if (start == 1 && stop == n)
         {
-            score = nums[j] * nums[k] * nums[i - 1] + f(i, k) + f(k + 1, j);
+            tmp = arr[i] + func(1, i - 1) + func(i + 1, n);
         }
         else
         {
-            score = nums[i - 1] * nums[j] + f(i, k) + f(k + 1, j);
-        }
-        maxi = max(maxi, score);
-    }
-    return dp[i][j] = maxi;
-}
 
+            tmp = arr[start - 1] * arr[stop + 1] + func(start, i - 1) + func(i + 1, stop);
+        }
+        ans = max(ans, tmp);
+    }
+    return ans;
+}
 int main()
 {
     cin >> n;
-    nums[0] = 1;
-    for (int i = 0; i < n + 2; i++)
+    for (ll i = 1; i <= n; i++)
     {
-        for (int j = 0; j < n + 2; j++)
-        {
-            dp[i][j] = -1;
-        }
+        cin >> arr[i];
     }
-    for (int i = 1; i <= n; i++)
-    {
-        cin >> nums[i];
-    }
-    nums[n + 1] = 1;
+    arr[0] = arr[n + 1] = 1;
 
-    cout << f(1, n + 1) << endl;
-
-    return 0;
+    ll ans = func(1, n);
+    cout << ans << endl;
 }

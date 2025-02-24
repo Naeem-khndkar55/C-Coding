@@ -1,42 +1,43 @@
 #include <cmath>
-#include <cstring>
-#include <cstdio>
 #include <vector>
 #include <iostream>
-#include <algorithm>
+#include <climits>
 using namespace std;
-int tonum(string str)
+typedef long long ll;
+const int N = 22 + 10;
+ll n;
+ll sum;
+ll ans = INT_MAX;
+int tonum(string x)
 {
     int num = 0;
-    for (int i = 0; i < str.size(); i++)
+    for (size_t i = 0; i < x.size(); i++)
     {
-        num = num * 10 + (int(str[i]) - 48);
+        num = num * 10 + (int(x[i]) - 48);
     }
     return num;
 }
-
 int main()
 {
-    /* Enter your code here. Read input from STDIN. Print output to STDOUT */
-    int k;
-    cin >> k;
+    cin >> n;
     string s;
     cin >> s;
-    int level = -1;
-    int sum = 0;
-    int n = s.size();
-    for (int i = 0; i < n; i++)
+    sum = 0;
+    ll level = -1;
+    for (size_t i = 0; i < s.size(); i++)
     {
         if (s[i] == '(')
         {
             level++;
         }
         else if (s[i] == ')')
+        {
             level--;
-        else if (level == k)
+        }
+        else if (level == n)
         {
             string tmp;
-            while (i < n && s[i] != '(' && s[i] != ')')
+            while (i < s.size() && s[i] != '(' && s[i] != ')')
             {
                 tmp.push_back(s[i]);
                 i++;

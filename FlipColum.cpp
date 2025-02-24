@@ -1,39 +1,38 @@
+#include <cmath>
+#include <cstdio>
+#include <vector>
 #include <iostream>
-#include <unordered_map>
-#include <string>
+#include <map>
 using namespace std;
-typedef long long ll;
-int n, m, k;
-const int mn = 1000;
-char a[mn][mn];
+
+int arr[100][100];
 int main()
 {
+    int n, m, k;
     cin >> n >> m >> k;
-    unordered_map<string, ll> um;
-    for (ll i = 0; i < n; i++)
+    map<int, int> mp;
+    for (int i = 0; i < n; i++)
     {
-        string s;
-        for (ll j = 0; j < m; j++)
+        for (int j = 0; j < m; j++)
         {
-            cin >> a[i][j];
-            s += a[i][j];
+            cin >> arr[i][j];
         }
-        um[s]++;
     }
-    ll ans = 0;
-    for (const auto [str, freq] : um)
+    int ans = 0;
+    for (int i = 0; i < n; i++)
     {
-        ll cz = 0;
-        for (char c : str)
+        int cz = 0;
+        for (int j = 0; j < m; j++)
         {
-            if (c == '0')
+            if (arr[i][j] == 0)
             {
                 cz++;
             }
         }
-        if (cz <= k && (k - cz) % 2 == 0)
+        mp[cz]++;
+        if ((k - cz) % 2 == 0)
         {
-            ans = max(ans, freq);
+            ans = max(ans, mp[cz]);
         }
     }
     cout << ans << endl;

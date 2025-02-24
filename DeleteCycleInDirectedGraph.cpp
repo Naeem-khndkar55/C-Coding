@@ -1,14 +1,33 @@
-#include <iostream>
+#include <cmath>
 #include <vector>
-#include <algorithm>
-
+#include <iostream>
+#include <climits>
 using namespace std;
+typedef long long ll;
+const int N = 22 + 10;
+ll n;
+ll m;
 
-const int N = 10;
-vector<int> adj[N], bestCycle;
-int par[N], hi = 200;
-int col[N];
+ll ans = INT_MAX;
+ll par[10];
+ll col[10];
+ll hi = 200;
+vector<ll> adj[10], bestCycle;
 
+void sort(vector<ll> &bestCycle)
+{
+    ll sg = bestCycle.size();
+    for (ll i = 0; i < sg - 1; i++)
+    {
+        for (ll j = 0; j < sg - i - 1; j++)
+        {
+            if (bestCycle[j] > bestCycle[j + 1])
+            {
+                swap(bestCycle[j], bestCycle[j + 1]);
+            }
+        }
+    }
+}
 void dfs(int u)
 {
     col[u] = 1;
@@ -16,12 +35,12 @@ void dfs(int u)
     {
         if (col[v] == 1)
         {
-            int sum = 0;
-            vector<int> cycle = {v};
-            for (int now = u; now != v; now = par[now])
+            ll sum = 0;
+            vector<ll> cycle = {v};
+            for (int i = u; i != v; i = par[i])
             {
-                sum += now;
-                cycle.push_back(now);
+                sum += i;
+                cycle.push_back(i);
             }
             if (sum < hi)
             {
@@ -37,26 +56,27 @@ void dfs(int u)
     }
     col[u] = 2;
 }
-
 int main()
 {
-    int n, m;
+
     cin >> n >> m;
-    for (int t = 0; t < m; ++t)
+    for (ll i = 0; i < m; i++)
     {
-        int u, v;
+        ll u, v;
         cin >> u >> v;
         adj[u].push_back(v);
     }
-    for (int i = 1; i <= n; ++i)
+    for (ll i = 1; i <= n; i++)
     {
         if (col[i] != 2)
+        {
             dfs(i);
+        }
     }
-    sort(bestCycle.begin(), bestCycle.end());
-    for (auto x : bestCycle)
+    sort(bestCycle);
+    for (auto i : bestCycle)
     {
-        cout << x << ' ';
+        cout << i << " ";
     }
-    cout << '\n';
+    cout << endl;
 }
