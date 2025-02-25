@@ -29,9 +29,9 @@ int boom(int x, int y)
 }
 int main()
 {
-    ll t;
+    int t;
     cin >> t;
-    ll p = 1;
+
     for (int k = 1; k <= t; k++)
     {
         int n;
