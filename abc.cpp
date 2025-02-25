@@ -4,78 +4,52 @@
 #include <climits>
 using namespace std;
 typedef long long ll;
-int arr[15][15];
-int b[15][15];
-int boom(int x, int y)
+const int N = 22 + 10;
+ll arr[100][100];
+ll b[100][100];
+ll n, m;
+ll ans;
+ll sum = INT_MAX;
+bool vis[100][100];
+int SumOfk(string x)
 {
-    if (x < 1 || y < 1 || y > 5)
+    ll num = 0;
+    for (size_t i = 0; i < x.size(); i++)
     {
-        return 0;
+        num = num * 10 + (int(x[i]) - 48);
     }
-    int p = 0, q = 0, r = 0;
-    if (b[x][y] == 1)
-    {
-        p = 1 + boom(x - 1, y - 1);
-        q = 1 + boom(x - 1, y + 1);
-        r = 1 + boom(x - 1, y);
-    }
-    else if (b[x][y] == 0)
-    {
-        p = boom(x - 1, y - 1);
-        q = boom(x - 1, y + 1);
-        r = boom(x - 1, y);
-    }
-    return max(max(p, q), r);
+    return num;
 }
 int main()
 {
-    ll t;
-    cin >> t;
-    ll p = 1;
-    for (int k = 1; k <= t; k++)
+    ll k;
+    cin >> k;
+    string s;
+    cin >> s;
+    sum = 0;
+    ll lev = -1;
+
+    for (size_t i = 0; i < s.size(); i++)
     {
-        int n;
-        cin >> n;
-        for (ll i = 1; i <= n + 1; i++)
+        if (s[i] == '(')
         {
-            for (ll j = 1; j <= 5; j++)
-            {
-                arr[i][j] = 0;
-                b[i][j] = 0;
-            }
+            lev++;
         }
-        for (ll i = 1; i <= n; i++)
+        else if (s[i] == ')')
         {
-            for (ll j = 1; j <= 5; j++)
-            {
-                cin >> arr[i][j];
-                b[i][j] = arr[i][j];
-            }
+            lev--;
         }
-        int ind = n;
-        int ans = 0;
-        while (ind > 0)
+        else if (lev == k)
         {
-            for (int i = ind; i > max(ind - 5, 0); i--)
+            string tmp;
+            while (i < s.size() && s[i] != '(' && s[i] != ')')
             {
-                for (int j = 1; j <= 5; j++)
-                {
-                    if (b[i][j] == 2)
-                    {
-                        b[i][j] = 0;
-                    }
-                }
+                tmp.push_back(s[i]);
+                i++;
             }
-            ans = max(ans, boom(n + 1, 3));
-            for (int i = ind; i > max(ind - 5, 0); i--)
-            {
-                for (ll j = 1; j <= 5; j++)
-                {
-                    b[i][j] = arr[i][j];
-                }
-            }
-            ind--;
+            i--;
+            sum += SumOfk(tmp);
         }
-        cout << "#" << k << " " << ans << endl;
     }
+    cout << sum << endl;
 }

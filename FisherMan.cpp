@@ -46,7 +46,6 @@ int main()
         cin >> fm[i];
         sum += fm[i];
     }
-
     fisherMan(1, 0, 0);
     cout << ans << endl;
 }

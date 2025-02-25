@@ -20,7 +20,6 @@ void wormhole(ll sx, ll sy, ll dx, ll dy, ll val)
         if (!vis[i])
         {
             vis[i] = true;
-
             wormhole(arr[i][2], arr[i][3], dx, dy, val + dist(sx, sy, arr[i][0], arr[i][1]) + arr[i][4]);
             wormhole(arr[i][0], arr[i][1], dx, dy, val + dist(sx, sy, arr[i][2], arr[i][3]) + arr[i][4]);
 
