@@ -1,55 +1,77 @@
+#include <iostream>
 #include <cmath>
 #include <vector>
-#include <iostream>
 #include <climits>
 using namespace std;
 typedef long long ll;
-const int N = 22 + 10;
-ll arr[100][100];
-ll b[100][100];
 ll n, m;
-ll ans;
-ll sum = INT_MAX;
-bool vis[100][100];
-int SumOfk(string x)
+ll ans = INT_MAX;
+ll col[100];
+ll par[100];
+ll hi = 200;
+vector<ll> adj[100], bestCycle;
+void sort(vector<ll> &bestCycle)
 {
-    ll num = 0;
-    for (size_t i = 0; i < x.size(); i++)
+    ll sg = bestCycle.size();
+    for (ll i = 0; i < sg - 1; i++)
     {
-        num = num * 10 + (int(x[i]) - 48);
+        for (ll j = 0; j < sg - i - 1; j++)
+        {
+            if (bestCycle[j] > bestCycle[j + 1])
+            {
+                swap(bestCycle[j], bestCycle[j + 1]);
+            }
+        }
     }
-    return num;
+}
+void dfs(ll u)
+{
+    col[u] = 1;
+    for (auto v : adj[u])
+    {
+        if (col[v] == 1)
+        {
+            ll sum = 0;
+            vector<ll> cycle = {v};
+            for (ll i = u; i != v; i = par[i])
+            {
+                sum += i;
+                cycle.push_back(i);
+            }
+            if (sum < hi)
+            {
+                hi = sum;
+                bestCycle = cycle;
+            }
+        }
+        else
+        {
+            par[v] = u;
+            dfs(v);
+        }
+    }
+    col[u] = 2;
 }
 int main()
 {
-    ll k;
-    cin >> k;
-    string s;
-    cin >> s;
-    sum = 0;
-    ll lev = -1;
-
-    for (size_t i = 0; i < s.size(); i++)
+    cin >> n >> m;
+    for (ll i = 0; i < m; i++)
     {
-        if (s[i] == '(')
+        ll u, v;
+        cin >> u >> v;
+        adj[u].push_back(v);
+    }
+    for (ll i = 1; i <= n; i++)
+    {
+        if (col[i] != 2)
         {
-            lev++;
-        }
-        else if (s[i] == ')')
-        {
-            lev--;
-        }
-        else if (lev == k)
-        {
-            string tmp;
-            while (i < s.size() && s[i] != '(' && s[i] != ')')
-            {
-                tmp.push_back(s[i]);
-                i++;
-            }
-            i--;
-            sum += SumOfk(tmp);
+            dfs(i);
         }
     }
-    cout << sum << endl;
+    sort(bestCycle);
+    for (auto i : bestCycle)
+    {
+        cout << i << " ";
+    }
+    cout << endl;
 }
