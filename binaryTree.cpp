@@ -98,6 +98,39 @@ void levelOder(Node *root)
     }
     cout << endl;
 }
+// height of binary tree
+int heightOfBinaryTree(Node *root)
+{
+    if (root == NULL)
+    {
+        return 0;
+    }
+    int leftHt = heightOfBinaryTree(root->left);
+    int rightHt = heightOfBinaryTree(root->right);
+    return max(leftHt, rightHt) + 1;
+}
+// count the node of the tree
+int nodeCount(Node *root)
+{
+    if (root == NULL)
+    {
+        return 0;
+    }
+    int leftNode = nodeCount(root->left);
+    int rightNode = nodeCount(root->right);
+    return leftNode + rightNode + 1;
+}
+// sum of the nodes
+int sumOfNodes(Node *root)
+{
+    if (root = NULL)
+    {
+        return 0;
+    }
+    int leftSum = sumOfNodes(root->left);
+    int rightSum = sumOfNodes(root->right);
+    return leftSum + rightSum + root->data;
+}
 int main()
 {
     ll n;
@@ -107,10 +140,19 @@ int main()
     {
         cin >> val[i];
     }
+    // build tree
     Node *root = buildTree(val);
+    // traversial of the tree
     preOderTraversal(root);
     inOderTraversal(root);
     postOderTraversal(root);
     levelOder(root);
+    // height ,count node,sum of all nodes
+    int hight = heightOfBinaryTree(root);
+    cout << hight << endl;
+    int nodeCnt = nodeCount(root);
+    cout << nodeCnt << endl;
+    int sumOfNodeValue = sumOfNodes(root);
+    cout << sumOfNodeValue << endl;
     cout << root->data << endl;
 }
