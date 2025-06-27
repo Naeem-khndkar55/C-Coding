@@ -73,6 +73,7 @@ void levelOder(Node *root)
     {
         Node *curr = q.front();
         q.pop();
+        // showing the tree level by level
         if (curr == NULL)
         {
             if (!q.empty())
@@ -98,7 +99,52 @@ void levelOder(Node *root)
     }
     cout << endl;
 }
-// height of binary tree
+// top view of a binart tree
+void topView(Node *root)
+{
+    queue<pair<Node *, int>> q;
+    q.push({root, 0});
+    map<int, int> mp;
+    while (q.size() > 0)
+    {
+        Node *curr = q.front().first;
+        int currHd = q.front().second;
+        q.pop();
+        if (mp.find(currHd) == mp.end())
+        {
+            mp[currHd] = curr->data;
+        }
+        if (curr->left != NULL)
+        {
+            q.push({root->left, currHd - 1});
+        }
+        if (curr->right != NULL)
+        {
+            q.push({curr->right, currHd + 1});
+        }
+    }
+    for (auto i : mp)
+    {
+        cout << i.second << " ";
+    }
+    cout << endl;
+}
+// kth of the binary tree
+void KthLevel(Node *root, int k)
+{
+    if (root == NULL)
+    {
+        return;
+    }
+    if (k == 1)
+    {
+        cout << root->data << " ";
+        return;
+    }
+    KthLevel(root->left, k - 1);
+    KthLevel(root->right, k - 1);
+}
+//  height of binary tree
 int heightOfBinaryTree(Node *root)
 {
     if (root == NULL)
@@ -147,6 +193,9 @@ int main()
     inOderTraversal(root);
     postOderTraversal(root);
     levelOder(root);
+    topView(root);
+    int k = 3; // number of level
+    KthLevel(root, k);
     // height ,count node,sum of all nodes
     int hight = heightOfBinaryTree(root);
     cout << hight << endl;
