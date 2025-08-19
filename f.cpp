@@ -1,48 +1,33 @@
 #include <bits/stdc++.h>
 using namespace std;
 typedef long long ll;
-
-vector<int> computePrefixFunction(const string &s)
-{
-    int n = s.length();
-    vector<int> pi(n, 0);
-    for (int i = 1; i < n; ++i)
-    {
-        int j = pi[i - 1];
-        while (j > 0 && s[i] != s[j])
-        {
-            j = pi[j - 1];
-        }
-        if (s[i] == s[j])
-        {
-            ++j;
-        }
-        pi[i] = j;
-    }
-    return pi;
-}
-
+// #define M = 100000000 + 7;
 int main()
 {
-
-    string s;
-    cin >> s;
-    int n = s.length();
-    vector<int> pi = computePrefixFunction(s);
-    vector<int> borders;
-
-    int j = pi[n - 1];
-    while (j > 0)
+    ll t;
+    cin >> t;
+    while (t--)
     {
-        borders.push_back(j);
-        j = pi[j - 1];
-    }
+        ll n;
+        cin >> n;
+        ll m = 100000000 + 7;
 
-    reverse(borders.begin(), borders.end());
-    for (int len : borders)
-    {
-        cout << len << " ";
-    }
+        if ((n % m) % 3 == 0)
+        {
+            cout << 0 << " " << 0 << endl;
+        }
+        else
+        {
 
-    return 0;
+            ll p = (n % m) % 3;
+            if (p == 2)
+            {
+                cout << 1 << " " << 2 << endl;
+            }
+            else
+            {
+                cout << 2 << " " << 1 << endl;
+            }
+        }
+    }
 }

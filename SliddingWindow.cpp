@@ -15,7 +15,7 @@ int sliddingWindow(vector<ll> v, ll n, ll k)
     ll ws = mxSum;
     for (ll i = k; i < n; i++)
     {
-        ws += v[k] - v[i - k];
+        ws += v[i] - v[i - k];
         mxSum = max(mxSum, ws);
     }
     return mxSum;
