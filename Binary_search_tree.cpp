@@ -41,7 +41,19 @@ Node *buildBST(vector<int> arr)
     }
     return root;
 }
-
+// bulid balanced BST
+Node *buildBalancedBST(vector<int> arr, int st, int ed)
+{
+    if (st > ed)
+    {
+        return NULL;
+    }
+    int mid = st + (ed - st) / 2;
+    Node *root = new Node(arr[mid]);
+    root->left = buildBalancedBST(arr, st, mid - 1);
+    root->right = buildBalancedBST(arr, mid + 1, ed);
+    return root;
+}
 // search a key in BST
 bool searchKey(Node *root, int key) // bigO(height)
 {
@@ -72,6 +84,18 @@ void inorder(Node *root)
     inorder(root->left);
     cout << root->data << " ";
     inorder(root->right);
+}
+// for marge two BST
+void inorderBST(Node *root, vector<int> &arr)
+{
+
+    if (root == NULL)
+    {
+        return;
+    }
+    inorderBST(root->left, arr);
+    arr.push_back(root->data);
+    inorderBST(root->right, arr);
 }
 // incorder successor
 Node *inorderSuccessor(Node *root)
@@ -120,6 +144,41 @@ Node *deleteNode(Node *root, int key)
         }
     }
     return root;
+}
+// marge 2 bst
+Node *MargeTwoBST(Node *root1, Node *root2)
+{
+    vector<int> arr1;
+    vector<int> arr2;
+    inorderBST(root1, arr1);
+    inorderBST(root2, arr2);
+    vector<int> finl;
+    int i = 0, j = 0;
+    while (i < arr1.size() && j < arr2.size())
+    {
+        if (arr1[i] <= arr2[j])
+        {
+            finl.push_back(arr1[i]);
+            i++;
+        }
+        else
+        {
+            finl.push_back(arr2[j]);
+            j++;
+        }
+    }
+    while (i < arr1.size())
+    {
+        finl.push_back(arr1[i]);
+        i++;
+    }
+    while (j < arr2.size())
+    {
+        finl.push_back(arr2[j]);
+        j++;
+    }
+    Node *root = buildBST(finl);                              // normal bst
+    Node *root3 = buildBalancedBST(finl, 0, finl.size() - 1); // balanced bst;
 }
 int main()
 {
