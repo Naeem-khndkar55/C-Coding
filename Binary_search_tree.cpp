@@ -1,9 +1,9 @@
 #include <bits/stdc++.h>
 using namespace std;
 typedef long long ll;
+
 class Node
 {
-    // boiler plate
 public:
     int data;
     Node *left;
@@ -14,6 +14,7 @@ public:
         left = right = NULL;
     }
 };
+
 // insertion of the node
 Node *insert(Node *root, int val)
 {
@@ -31,17 +32,19 @@ Node *insert(Node *root, int val)
     }
     return root;
 }
-// buliding BST function
+
+// build BST function
 Node *buildBST(vector<int> arr)
 {
     Node *root = NULL;
-    for (auto val : arr)
+    for (auto val : arr) // fixed: arr[val] → val
     {
-        root = insert(root, arr[val]);
+        root = insert(root, val);
     }
     return root;
 }
-// bulid balanced BST
+
+// build balanced BST
 Node *buildBalancedBST(vector<int> arr, int st, int ed)
 {
     if (st > ed)
@@ -54,8 +57,9 @@ Node *buildBalancedBST(vector<int> arr, int st, int ed)
     root->right = buildBalancedBST(arr, mid + 1, ed);
     return root;
 }
+
 // search a key in BST
-bool searchKey(Node *root, int key) // bigO(height)
+bool searchKey(Node *root, int key)
 {
     if (root == NULL)
     {
@@ -74,6 +78,7 @@ bool searchKey(Node *root, int key) // bigO(height)
         return searchKey(root->right, key);
     }
 }
+
 // output in sorted array
 void inorder(Node *root)
 {
@@ -85,10 +90,10 @@ void inorder(Node *root)
     cout << root->data << " ";
     inorder(root->right);
 }
-// for marge two BST
+
+// store inorder traversal into vector
 void inorderBST(Node *root, vector<int> &arr)
 {
-
     if (root == NULL)
     {
         return;
@@ -97,7 +102,8 @@ void inorderBST(Node *root, vector<int> &arr)
     arr.push_back(root->data);
     inorderBST(root->right, arr);
 }
-// incorder successor
+
+// inorder successor
 Node *inorderSuccessor(Node *root)
 {
     while (root != NULL && root->left != NULL)
@@ -106,6 +112,7 @@ Node *inorderSuccessor(Node *root)
     }
     return root;
 }
+
 // delete a node
 Node *deleteNode(Node *root, int key)
 {
@@ -115,15 +122,14 @@ Node *deleteNode(Node *root, int key)
     }
     if (root->data < key)
     {
-        deleteNode(root->right, key);
+        root->right = deleteNode(root->right, key); // fixed
     }
     else if (root->data > key)
     {
-        deleteNode(root->left, key);
+        root->left = deleteNode(root->left, key); // fixed
     }
     else
     {
-
         if (root->left == NULL)
         {
             Node *temp = root->right;
@@ -145,13 +151,14 @@ Node *deleteNode(Node *root, int key)
     }
     return root;
 }
-// marge 2 bst
+
+// merge 2 BSTs
 Node *MargeTwoBST(Node *root1, Node *root2)
 {
-    vector<int> arr1;
-    vector<int> arr2;
+    vector<int> arr1, arr2;
     inorderBST(root1, arr1);
     inorderBST(root2, arr2);
+
     vector<int> finl;
     int i = 0, j = 0;
     while (i < arr1.size() && j < arr2.size())
@@ -177,20 +184,53 @@ Node *MargeTwoBST(Node *root1, Node *root2)
         finl.push_back(arr2[j]);
         j++;
     }
-    Node *root = buildBST(finl);                              // normal bst
-    Node *root3 = buildBalancedBST(finl, 0, finl.size() - 1); // balanced bst;
+
+    cout << "Merged Array: ";
+    for (int x : finl)
+        cout << x << " ";
+    cout << "\n";
+
+    Node *rootNormal = buildBST(finl);                               // normal BST
+    Node *rootBalanced = buildBalancedBST(finl, 0, finl.size() - 1); // balanced BST
+
+    cout << "Inorder of Merged Normal BST: ";
+    inorder(rootNormal);
+    cout << "\n";
+
+    cout << "Inorder of Merged Balanced BST: ";
+    inorder(rootBalanced);
+    cout << "\n";
+
+    return rootBalanced; // returning balanced as final root (you can change if needed)
 }
+
 int main()
 {
     vector<int> arr = {3, 2, 1, 5, 6, 4};
-    Node *root = buildBST(arr); // build function
-    inorder(root);
+    vector<int> arr2 = {2, 3, 8, 9};
+
+    Node *root1 = buildBST(arr);  // build function
+    Node *root2 = buildBST(arr2); // build function
+
+    cout << "BST1 inorder: ";
+    inorder(root1);
+    cout << "\n";
+
+    cout << "BST2 inorder: ";
+    inorder(root2);
+    cout << "\n";
+
     int key = 6;
-    cout << endl;
-    cout << searchKey(root, key) << endl;
-    // delete a node
-    deleteNode(root, key);
-    Node *root = buildBST(arr); // build function
-    inorder(root);
+    cout << "Search for " << key << ": " << searchKey(root1, key) << "\n";
+
+    // delete a node from first BST
+    root1 = deleteNode(root1, key);
+    cout << "BST1 inorder after deletion: ";
+    inorder(root1);
+    cout << "\n";
+
+    // merge 2 BSTs
+    Node *merged = MargeTwoBST(root1, root2);
+
     return 0;
 }
